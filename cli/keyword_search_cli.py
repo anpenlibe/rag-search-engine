@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import string
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Keyword Search CLI")
@@ -22,10 +23,13 @@ def main() -> None:
             movies = data["movies"]
             results = []
             index = 1
-
+            
+            # remove punctuation helpers
+            punc_table = str.maketrans("", "", string.punctuation)
+            
             # search logic, results for only 5 indices
             for movie in movies:               
-                if args.query.lower() in movie["title"].lower():
+                if args.query.lower().translate(punc_table) in movie["title"].lower().translate(punc_table):
                     results.append(movie["title"])
                     print(f"{index}. {movie["title"]}")
                     index += 1
